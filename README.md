@@ -70,6 +70,7 @@ most assuredly be larger on 32-bit platforms. Kudos to SLOCCount.
 | Bounce2 | 141 lines | 16 bytes | High | - | Yes | - | - | - |
 | DebounceFilterLib | 91 lines | 16 bytes | Both | - | - | - | Yes | - |
 | ButtonDebounce | 52 lines | 18 bytes | Low | - | - | - | Yes | - |
+| JC_Button | 112 lines | 18 bytes | Both | - | Yes | Yes | - | - |
 | Button2 | 150 lines | 38 bytes | Low | - | Yes | **Yes** | Yes | - |
 | EasyButton | 193 lines | 43 bytes | Both | - | Yes | - | Yes | - |
 
@@ -86,3 +87,5 @@ To install this library, download it as a zipfile by clicking [here](https://git
  - Tag proper releases
  - Performance testing? Instructions / poll?
  - Currently, overriding the `#define` configuration doesn't work -- but it should. Investigate this.
+ - Clarify that this is MIT Licensed.
+ - Compare flash sizes? :3
