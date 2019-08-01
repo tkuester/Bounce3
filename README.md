@@ -37,6 +37,8 @@ While **Button3** is quite configurable and powerful, it remains simple
 to use.
 
 ```C++
+#include <Bounce3.h>
+
 // Connected between D2 and GND
 Button3 myButton(2);
 
@@ -69,6 +71,10 @@ most assuredly be larger on 32-bit platforms. Kudos to SLOCCount.
 | ButtonDebounce | 52 lines | 18 bytes | Low | - | - | - | Yes | - |
 | Button2 | 150 lines | 38 bytes | Low | - | Yes | **Yes** | Yes | - |
 | EasyButton | 193 lines | 43 bytes | Both | - | Yes | - | Yes | - |
+
+## Installation
+
+To install this library, download it as a zipfile by clicking [here](https://github.com/tkuester/Bounce3/archive/master.zip). Open the Arduino IDE, and click (**Sketch** > **Include Library** > **Add .ZIP Library...**), and select the file you downloaded. From there, you can explore the examples under (**File** > **Examples** > **Bounce3**), and include it in your projects by clicking (**Sketch** > **Include Library** > **Bounce3**).
 
 ## TODO
 
