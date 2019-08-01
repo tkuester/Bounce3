@@ -33,14 +33,14 @@ eventually get around to it.*
 
 ## Example Code
 
-While **Button3** is quite configurable and powerful, it remains simple
+While **Bounce3** is quite configurable and powerful, it remains simple
 to use.
 
 ```C++
 #include <Bounce3.h>
 
 // Connected between D2 and GND
-Button3 myButton(2);
+Bounce3 myButton(2);
 
 void setup() {
   Serial.begin(115200);
