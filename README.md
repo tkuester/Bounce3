@@ -9,15 +9,16 @@ differ, but four prominent issues arise.
 
 First, the need for this project arose from struggling to use a poorly
 written debouncing library. While I won't name names, `fell()` only reported
-true when you let go of the button. Looking through the code, I wasn't
-confident it'd capture tricky edge cases, like both edges of very short
-pulses.
+true when you let go of the button, not when you pressed it. I burned a lot of
+time on this, given that my hardware was active low. Looking through
+the code, I wasn't confident it'd capture tricky edge cases either, like
+both edges of very short pulses.
 
 Second, the size of the debouncer struct/object can get quite large. Imagine
-sacrificing a quarter of your RAM to debouncing buttons! **Bounce3** scrapes
-in at 10 bytes, beating the largest library by a factor of five! One tradeoff
-that made this possible was not supporting callbacks. (But hey, this isn't
-JavaScript!)
+sacrificing a quarter of your RAM to debouncing six buttons! **Bounce3**
+scrapes in at 10 bytes, beating the largest library by a factor of five! One
+tradeoff that made this possible was not supporting callbacks. (But hey,
+this isn't JavaScript!)
 
 Third, no library provides a native ability to retrigger when the button
 is held down for a period of time. **Button2** provides excellent gesture
@@ -27,9 +28,9 @@ standard projects, like clocks.
 Finally, no library supports "atomic" updates. It may be a bit pedantic, but
 I like to check all my inputs at the same time, when possible. This can
 remove a few costly calls to `digitalRead` and `millis`, which might speed
-up your loop by a few instructions. However, this has not been tested yet.
-In any circumstance, it at least allows me to write test cases, *when I
-eventually get around to it.*
+up your loop by a few instructions. However, performance was not a goal, and
+has not been measured yet. In any circumstance, the way `poll(ts, val)` is
+exposed, it allows adapting this to other systems, and writing test cases.
 
 ## Example Code
 
@@ -83,3 +84,5 @@ To install this library, download it as a zipfile by clicking [here](https://git
  - Test on various architectures (Feather M0, ESP32)
  - Generate documentation
  - Tag proper releases
+ - Performance testing? Instructions / poll?
+ - Currently, overriding the `#define` configuration doesn't work -- but it should. Investigate this.
