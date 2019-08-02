@@ -15,9 +15,16 @@
 // g - Press Type 0
 // h - Press Type 1
 
-#define LAST_PRESSED_BIT (1 << 3)
-#define PRESSED_BIT  (1 << 4)
-#define RELEASED_BIT  (1 << 5)
+#define LAST_PRESSED_FLAG   (1 << 3)
+#define PRESSED_FLAG        (1 << 4)
+#define RELEASED_FLAG       (1 << 5)
+#define MODE_MASK           (0x03)
+#define REPEAT_MASK         (0xc0)
+
+#define GET_REPEAT()        ((flags & REPEAT_MASK) >> 6)
+#define PRESS               (B3_PRESS << 6)
+#define REPEAT_SLOW         (B3_REPEAT_SLOW << 6)
+#define REPEAT_FAST         (B3_REPEAT_FAST << 6)
 
 Bounce3::Bounce3(uint8_t pin) :
     Bounce3(pin,
@@ -29,7 +36,7 @@ Bounce3::Bounce3(uint8_t pin, uint8_t mode) :
 
 Bounce3::Bounce3(uint8_t pin, uint8_t mode, uint8_t pin_mode) :
     pin(pin),
-    flags(mode & 0x03), // Don't let the user set our internal variables
+    flags(mode & MODE_MASK), // Don't let the user set our internal variables
     last_ts(0),
     gesture_ts(0)
     {
@@ -40,7 +47,7 @@ Bounce3::Bounce3(uint8_t pin, uint8_t mode, uint8_t pin_mode) :
 bool Bounce3::poll(uint32_t ts, uint8_t val) {
     const bool active_val = (flags & B3_ACTIVE_HIGH) > 0;
     const bool curr_pressed = (val > 0) == active_val;
-    const bool last_pressed = (flags & LAST_PRESSED_BIT) > 0;
+    const bool last_pressed = (flags & LAST_PRESSED_FLAG) > 0;
     const bool mode_oneshot = (flags & B3_MODE_ONESHOT) > 0;
 
     // Clear all the flags
@@ -49,11 +56,12 @@ bool Bounce3::poll(uint32_t ts, uint8_t val) {
     // Button state changes (after guard interval)
     if ((curr_pressed != last_pressed) && \
        (ts - last_ts) > B3_DEBOUNCE_MS) {
-        flags |= (B3_PRESS << 6);
+        flags |= PRESS;
         if (curr_pressed) {
-            flags |= PRESSED_BIT | LAST_PRESSED_BIT;
+            flags |= PRESSED_FLAG | LAST_PRESSED_FLAG;
         } else {
-            flags ^= (RELEASED_BIT | LAST_PRESSED_BIT);
+            flags ^= (RELEASED_FLAG | LAST_PRESSED_FLAG);
+            // Store pressed duration in gesture_ts
             gesture_ts = ts - last_ts;
         }
 
@@ -66,13 +74,13 @@ bool Bounce3::poll(uint32_t ts, uint8_t val) {
         if ((ts - last_ts) > B3_FAST_WAIT_MS) {
             if ((ts - gesture_ts) > B3_FAST_INT_MS) {
                 gesture_ts = ts;
-                flags |= ((B3_REPEAT_FAST << 6) | PRESSED_BIT);
+                flags |= (REPEAT_FAST | PRESSED_FLAG);
                 return true;
             }
         } else if ((ts - last_ts) > B3_SLOW_WAIT_MS) {
             if ((ts - gesture_ts) > B3_SLOW_INT_MS) {
                 gesture_ts = ts;
-                flags |= ((B3_REPEAT_SLOW << 6) | PRESSED_BIT);
+                flags |= (REPEAT_SLOW | PRESSED_FLAG);
                 return true;
             }
         }
@@ -86,16 +94,17 @@ bool Bounce3::poll(void) {
 }
 
 uint8_t Bounce3::pressed(void) {
-    return (flags & PRESSED_BIT) ? (flags >> 6) & 0x03 : 0;
+    return (flags & PRESSED_FLAG) ? GET_REPEAT() : 0;
 }
 
 uint32_t Bounce3::released(void) {
-    if (flags & RELEASED_BIT) {
+    if (flags & RELEASED_FLAG) {
+        // Always return a non-zero value. (Should be impossible though...)
         return gesture_ts == 0 ? 1 : gesture_ts;
     }
     return 0;
 }
 
 bool Bounce3::changed(void) {
-    return (flags & (PRESSED_BIT | RELEASED_BIT)) > 0;
+    return (flags & (PRESSED_FLAG | RELEASED_FLAG)) > 0;
 }
