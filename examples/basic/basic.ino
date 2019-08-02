@@ -24,6 +24,10 @@
 const byte pin_num = 2;
 Bounce3 myButton(pin_num);
 
+// If you only want to get one count per press, try setting Bounce3
+// to run in one-shot mode!
+//Bounce3 myButton(pin_num, B3_MODE_ONESHOT);
+
 // Let's keep track of how many times the button has been
 // pressed. We'll put this variable in global scope, so it can keep
 // it's value for each call to loop().
