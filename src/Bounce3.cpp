@@ -28,10 +28,11 @@ Bounce3::Bounce3(uint8_t pin, uint8_t mode) :
     Bounce3(pin, mode, (mode & B3_ACTIVE_HIGH ? INPUT : INPUT_PULLUP)) { }
 
 Bounce3::Bounce3(uint8_t pin, uint8_t mode, uint8_t pin_mode) :
-    pin(pin) {
-    // Don't let the user set our internal variables
-    this->flags = mode & 0x03;
-
+    pin(pin),
+    flags(mode & 0x03), // Don't let the user set our internal variables
+    last_ts(0),
+    gesture_ts(0)
+    {
     // Configure the pin
     pinMode(pin, pin_mode);
 
