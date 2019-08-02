@@ -13,7 +13,8 @@
 // key down. Technically we don't need to specify
 // any of the optional variables, but I'm doing it to show
 // off different parts of the library.
-Bounce3 myButton(2,
+const byte pin_num = 2;
+Bounce3 myButton(pin_num,
                  B3_MODE_ONESHOT | B3_ACTIVE_LOW,
                  INPUT_PULLUP);
 
@@ -38,7 +39,7 @@ void setup() {
 
 void loop() {
   unsigned long now = millis();
-  uint8_t btn = digitalRead(2);
+  uint8_t btn = digitalRead(pin_num);
 
   // Normally, you'd just call .poll() by itself. However,
   // poll allows us to feed in timestamps and the button
