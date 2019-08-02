@@ -15,7 +15,7 @@
 // g - Press Type 0
 // h - Press Type 1
 
-#define LAST_VAL_BIT (1 << 3)
+#define LAST_PRESSED_BIT (1 << 3)
 #define PRESSED_BIT  (1 << 4)
 #define RELEASED_BIT  (1 << 5)
 
@@ -35,36 +35,25 @@ Bounce3::Bounce3(uint8_t pin, uint8_t mode, uint8_t pin_mode) :
     {
     // Configure the pin
     pinMode(pin, pin_mode);
-
-    // Update the "last value" based on whether or not the signal
-    // is active high or not.
-    if ((this->flags & B3_ACTIVE_HIGH) == 0) {
-        this->flags |= LAST_VAL_BIT;
-    }
 }
 
 bool Bounce3::poll(uint32_t ts, uint8_t val) {
-    const bool curr_val = val > 0;
     const bool active_val = (flags & B3_ACTIVE_HIGH) > 0;
-    const bool last_val = (flags & LAST_VAL_BIT) > 0;
+    const bool curr_pressed = (val > 0) == active_val;
+    const bool last_pressed = (flags & LAST_PRESSED_BIT) > 0;
+    const bool mode_oneshot = (flags & B3_MODE_ONESHOT) > 0;
 
-    // Clear the pressed/release flag
-    flags &= ~(PRESSED_BIT | RELEASED_BIT);
+    // Clear all the flags
+    flags &= 0x0f;
 
     // Button state changes (after guard interval)
-    if ((curr_val != last_val) && \
+    if ((curr_pressed != last_pressed) && \
        (ts - last_ts) > B3_DEBOUNCE_MS) {
-        flags &= 0x3f;
-        flags |= (B3_PRESS << 6) | (curr_val == active_val ? PRESSED_BIT : RELEASED_BIT);
-
-        // Housekeeping: Update the last valid value
-        if (curr_val) {
-            this->flags |= LAST_VAL_BIT;
+        flags |= (B3_PRESS << 6);
+        if (curr_pressed) {
+            flags |= PRESSED_BIT | LAST_PRESSED_BIT;
         } else {
-            this->flags &= ~(LAST_VAL_BIT);
-        }
-
-        if(curr_val != active_val) {
+            flags ^= (RELEASED_BIT | LAST_PRESSED_BIT);
             gesture_ts = ts - last_ts;
         }
 
@@ -73,18 +62,16 @@ bool Bounce3::poll(uint32_t ts, uint8_t val) {
     }
 
     // Button is active, and not in oneshot mode
-    if ((curr_val == active_val) && (flags & B3_MODE_ONESHOT) == 0) {
+    if (curr_pressed && !mode_oneshot) {
         if ((ts - last_ts) > B3_FAST_WAIT_MS) {
             if ((ts - gesture_ts) > B3_FAST_INT_MS) {
                 gesture_ts = ts;
-                flags &= 0x3f;
                 flags |= ((B3_REPEAT_FAST << 6) | PRESSED_BIT);
                 return true;
             }
         } else if ((ts - last_ts) > B3_SLOW_WAIT_MS) {
             if ((ts - gesture_ts) > B3_SLOW_INT_MS) {
                 gesture_ts = ts;
-                flags &= 0x3f;
                 flags |= ((B3_REPEAT_SLOW << 6) | PRESSED_BIT);
                 return true;
             }
