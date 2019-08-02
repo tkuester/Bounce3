@@ -3,6 +3,49 @@
 A library written to address some shortcomings of various poll based Arduino
 debouncing libraries--for novice programmers and advanced users alike.
 
+## Example Code
+
+While **Bounce3** is quite configurable and powerful, it remains simple
+to use.
+
+```C++
+#include <Bounce3.h>
+
+// Connected between D2 and GND
+Bounce3 myButton(2);
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  myButton.poll();
+
+  // Your code here
+
+  if(myButton.pressed()) {
+    Serial.println("Button pushed!");
+  }
+}
+```
+## Feature Comparison
+
+For the following table, sizes were calculated for the Arduino Uno. They will
+most assuredly be larger on 32-bit platforms. Kudos to SLOCCount.
+
+| Library | SLOC | Object Size | Polarity | Retrigger | Duration | Gestures | Callbacks | Atomic |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **Bounce3** | 110 lines | **10 bytes** | Both | **Fast, Slow** | Yes | - | - | **Yes** |
+| FTDebouncer | 117 lines | 14 bytes | Both | - | - | - | - | - |
+| Bounce2 | 141 lines | 16 bytes | High | - | Yes | - | - | - |
+| DebounceFilterLib | 91 lines | 16 bytes | Both | - | - | - | Yes | - |
+| ButtonDebounce | 52 lines | 18 bytes | Low | - | - | - | Yes | - |
+| JC_Button | 112 lines | 18 bytes | Both | - | Yes | Yes | - | - |
+| Button2 | 150 lines | 38 bytes | Low | - | Yes | **Yes** | Yes | - |
+| EasyButton | 193 lines | 43 bytes | Both | - | Yes | - | Yes | - |
+
+## Rationale
+
 Most debouncing libraries seem to follow the same pattern: check for recent
 edge changes, and impose a blackout for a short period after. Readability may
 differ, but four prominent issues arise.
@@ -32,60 +75,43 @@ up your loop by a few instructions. However, performance was not a goal, and
 has not been measured yet. In any circumstance, the way `poll(ts, val)` is
 exposed, it allows adapting this to other systems, and writing test cases.
 
-## Example Code
-
-While **Bounce3** is quite configurable and powerful, it remains simple
-to use.
-
-```C++
-#include <Bounce3.h>
-
-// Connected between D2 and GND
-Bounce3 myButton(2);
-
-void setup() {
-  Serial.begin(115200);
-}
-
-void loop() {
-  myButton.poll();
-
-  // Your code here
-
-  if(myButton.pressed()) {
-    Serial.println("Button pushed!");
-  }
-}
-```
-
-## Feature Comparison
-
-For the following table, sizes were calculated for the Arduino Uno. They will
-most assuredly be larger on 32-bit platforms. Kudos to SLOCCount.
-
-| Library | SLOC | Object Size | Polarity | Retrigger | Duration | Gestures | Callbacks | Atomic |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Bounce3** | 110 lines | **10 bytes** | Both | **Fast, Slow** | Yes | - | - | **Yes** |
-| FTDebouncer | 117 lines | 14 bytes | Both | - | - | - | - | - |
-| Bounce2 | 141 lines | 16 bytes | High | - | Yes | - | - | - |
-| DebounceFilterLib | 91 lines | 16 bytes | Both | - | - | - | Yes | - |
-| ButtonDebounce | 52 lines | 18 bytes | Low | - | - | - | Yes | - |
-| JC_Button | 112 lines | 18 bytes | Both | - | Yes | Yes | - | - |
-| Button2 | 150 lines | 38 bytes | Low | - | Yes | **Yes** | Yes | - |
-| EasyButton | 193 lines | 43 bytes | Both | - | Yes | - | Yes | - |
-
 ## Installation
 
 To install this library, download it as a zipfile by clicking [here](https://github.com/tkuester/Bounce3/archive/master.zip). Open the Arduino IDE, and click (**Sketch** > **Include Library** > **Add .ZIP Library...**), and select the file you downloaded. From there, you can explore the examples under (**File** > **Examples** > **Bounce3**), and include it in your projects by clicking (**Sketch** > **Include Library** > **Bounce3**).
+
+## Hardware Utilization
+
+This library was written to be as unobtrusive as possible. It doesn't use
+timers or interrupts, and should be platform independent. The only
+requirement is to call `poll()` before checking the button state. The best
+place to do this is at the top of your loop.
+
+The only soft requirement is a functioning call to `millis()`. If your custom
+firmware has interfered with that function, you will need to call the explicit
+version with `poll(ts, val)`.
+
+This code has been tested with the following boards:
+
+ * Arduino UNO
+ * Feather M0
+
+If you have tested this code on new hardware, please let me know!
+
+## Customization
+
+The library uses `#define`s to set various timing settings, like how long to
+wait for bouncing, and repeat intervals. Unfortunately, the way the Arduino
+build system is configured, you won't be able to redefine them. If you want
+to control them, (ie: to handle extremely bouncy buttons), copy the contents
+of `Button3/src/*` into your sketch directory. Then click (**Sketch** >
+**Add File...**) to bring your custom code in.
 
 ## TODO
 
  - List library in the Arduino repositories
  - Write test cases, esp. focused on rollover
- - Test on various architectures (Feather M0, ESP32)
+ - Test on more architectures (ESP32, ...)
  - Generate documentation
  - Tag proper releases
  - Performance testing? Instructions / poll?
- - Currently, overriding the `#define` configuration doesn't work -- but it should. Investigate this.
- - Clarify that this is MIT Licensed.
  - Compare flash sizes? :3
