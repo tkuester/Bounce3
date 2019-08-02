@@ -103,7 +103,7 @@ The library uses `#define`s to set various timing settings, like how long to
 wait for bouncing, and repeat intervals. Unfortunately, the way the Arduino
 build system is configured, you won't be able to redefine them. If you want
 to control them, (ie: to handle extremely bouncy buttons), copy the contents
-of `Button3/src/*` into your sketch directory. Then click (**Sketch** >
+of `Bounce3/src/*` into your sketch directory. Then click (**Sketch** >
 **Add File...**) to bring your custom code in.
 
 ## TODO
