@@ -87,7 +87,16 @@ class Bounce3 {
     bool poll(void);
 
     /**
-     * Returns >0 if the button was pressed this loop.
+     * Determine if the button was pressed this loop. If the button was not
+     * pressed, the function returns zero. A non-zero value indicates the
+     * button was pressed, so you can evaluate it as a boolean.
+     *
+     * If the instance is configured in one-shot mode, it will only return
+     * B3_PRESS once per debounced button press.
+     *
+     * If the instance is configured in repeat mode, it will return
+     * B3_REPEAT_SLOW or B3_REPEAT_FAST to allow the code to differentiate
+     * between the first press and repeat presses (if desired).
      *
      * Return Values:
      * 0 - Not pressed
