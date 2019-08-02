@@ -1,22 +1,31 @@
-#include <Bounce3.h>
+/**
+ * basic.ino
+ *
+ * If you're using this library, it's likely that you understand
+ * how contact bounce can mess up the behavior of your sketch!
+ * Bounce3 is a useful library that helps make bouncy buttons
+ * behave better.
+ *
+ * To use this sketch, connect a button or switch between pin 2
+ * and ground, like this! (Really, any pin will do. I just
+ * happened to choose D2!)
+ *
+ * -------+
+ * Arduino|
+ *        |
+ *     D2 |------+
+ *        |      |
+ *        |      |
+ *        |        /   (Switch)
+ *        |      o/
+ *        |      |
+ *        |      |
+ *        |     === (GND)
+ *        |      =
+ *        |
+ */
 
-// To use this sketch, connect a button or switch between pin 2
-// and ground, like this! (Really, any pin will do. I just
-// happened to choose D2!)
-//
-// -------+
-// Arduino|
-//        |
-//     D2 |------+
-//        |      |
-//        |      |
-//        |        /   (Switch)
-//        |      o/
-//        |      |
-//        |      |
-//        |     === (GND)
-//        |      =
-//        |
+#include <Bounce3.h>
 
 // Standard instantiation just needs to know the pin number.
 // You don't even need to call pinMode in setup, I'll do

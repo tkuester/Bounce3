@@ -4,6 +4,10 @@
  * Compares the debouncer library to a naive implementation.
  * Uses an active low button, with the Arduino's internal
  * pullup resistor.
+ *
+ * Note that this example was coded to work with a button
+ * connected to ground, as in basic.ino. You will need to
+ * modify the program to work with an active high button!
  */
 
 #include <Bounce3.h>

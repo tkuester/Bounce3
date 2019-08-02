@@ -1,13 +1,26 @@
+/**
+ * whole_port_check.ino
+ *
+ * Here's a slightly more advanced trick. Let's say you have six
+ * buttons. On an Arduino UNO, you can you can read them all in
+ * one clock cycle, and feed the results to Bounce3. This might
+ * save a few clock cycles, and makes the firmware behave...
+ * perhaps more predictably.
+ *
+ * That being said... while Bounce3 was written to be fairly
+ * conservative with CPU, the repeat mode and configuration
+ * checks will eat a decent bit of time. Ya win some, ya lose
+ * some...
+ */
 #include <Bounce3.h>
 
-// Here's a neat trick. If you have a bunch of buttons... let's
-// say six. If you're trying to conserve CPU cycles, you can read
-// them all in one clock cycle, and feed the results to Bounce3.
-
-// That being said... while Bounce3 was written to be fairly
-// conservative with CPU, the retrigger code and configuration
-// checks will eat a decent bit of time. Ya win some, ya lose
-// some...
+// It should be noted, this code was written specifically with
+// AVR8 hardware in mind. The concept can be ported to other
+// platforms, though! If you do this, please submit a pull
+// request!
+#ifndef ARDUINO_ARCH_AVR
+#error This example written for the AVR8 platform only!
+#endif
 
 Bounce3 buttons[6];
 unsigned int count[6];
