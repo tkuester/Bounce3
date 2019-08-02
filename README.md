@@ -94,6 +94,7 @@ This code has been tested with the following boards:
 
  * Arduino UNO
  * Feather M0
+ * ESP32
 
 If you have tested this code on new hardware, please let me know!
 
@@ -110,7 +111,7 @@ of `Bounce3/src/*` into your sketch directory. Then click (**Sketch** >
 
  - List library in the Arduino repositories
  - Write test cases, esp. focused on rollover
- - Test on more architectures (ESP32, ...)
+ - Test on more architectures
  - Generate documentation
  - Tag proper releases
  - Performance testing? Instructions / poll?
