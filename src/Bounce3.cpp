@@ -25,9 +25,7 @@ Bounce3::Bounce3(uint8_t pin) :
             INPUT_PULLUP) { }
 
 Bounce3::Bounce3(uint8_t pin, uint8_t mode) :
-    Bounce3(pin,
-            mode,
-            INPUT_PULLUP) { }
+    Bounce3(pin, mode, (mode & B3_ACTIVE_HIGH ? INPUT : INPUT_PULLUP)) { }
 
 Bounce3::Bounce3(uint8_t pin, uint8_t mode, uint8_t pin_mode) :
     pin(pin) {
