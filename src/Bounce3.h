@@ -107,6 +107,20 @@ class Bounce3 {
     uint8_t pressed(void);
 
     /**
+     * Returns true if the button is currently held down.
+     */
+    bool held(void);
+
+    /**
+     * Returns how long the button has been held down if the
+     * button is currently pressed, otherwise returns 0.
+     *
+     * The user may optionally specify the current timestamp.
+     */
+    uint32_t heldFor(uint32_t millis);
+    uint32_t heldFor(void);
+
+    /**
      * Returns the number of milliseconds the button was
      * held down, or 0 if the button was not just released.
      */

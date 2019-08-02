@@ -97,6 +97,26 @@ uint8_t Bounce3::pressed(void) {
     return (flags & PRESSED_FLAG) ? GET_REPEAT() : 0;
 }
 
+bool Bounce3::held(void) {
+    return (flags & LAST_PRESSED_FLAG) > 0;
+}
+
+uint32_t Bounce3::heldFor(void) {
+    return heldFor(millis());
+}
+
+uint32_t Bounce3::heldFor(uint32_t ts) {
+    if (this->held()) {
+        uint32_t ret = ts - last_ts;
+        if (ret == 0) {
+            return 1;
+        }
+        return ret;
+    }
+
+    return 0;
+}
+
 uint32_t Bounce3::released(void) {
     if (flags & RELEASED_FLAG) {
         // Always return a non-zero value. (Should be impossible though...)
