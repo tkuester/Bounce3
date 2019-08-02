@@ -28,7 +28,7 @@ Bounce3 buttons[6] = {Bounce3(8),
                       Bounce3(11),
                       Bounce3(12),
                       Bounce3(13)};
-unsigned int count[6] 
+unsigned int count[6];
 
 void setup() {
   Serial.begin(115200);
