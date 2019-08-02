@@ -22,8 +22,13 @@
 #error This example written for the AVR8 platform only!
 #endif
 
-Bounce3 buttons[6];
-unsigned int count[6];
+Bounce3 buttons[6] = {Bounce3(8),
+                      Bounce3(9),
+                      Bounce3(10),
+                      Bounce3(11),
+                      Bounce3(12),
+                      Bounce3(13)};
+unsigned int count[6] 
 
 void setup() {
   Serial.begin(115200);
@@ -31,13 +36,6 @@ void setup() {
   // Ooo, look! memset. If you're reading raw Arduino
   // registers, this shouldn't be too exciting for you.
   memset(count, 0, sizeof(count));
-  
-  // Setup pins 8-13. (Also, note! You don't need to instantiate
-  // this in global scope.) Remember, it's still important to
-  // specify pin number: Bounce3 is calling pinMode for us.
-  for(uint8_t i = 0; i < 6; i++) {
-    buttons[i] = Bounce3(i + 8);
-  }
 
   Serial.println("I'm alive!");
 }
