@@ -32,7 +32,11 @@ Bounce3::Bounce3(uint8_t pin) :
             INPUT_PULLUP) { }
 
 Bounce3::Bounce3(uint8_t pin, uint8_t mode) :
+#ifdef INPUT_PULLDOWN
+    Bounce3(pin, mode, (mode & B3_ACTIVE_HIGH ? INPUT_PULLDOWN : INPUT_PULLUP)) { }
+#else
     Bounce3(pin, mode, (mode & B3_ACTIVE_HIGH ? INPUT : INPUT_PULLUP)) { }
+#endif
 
 Bounce3::Bounce3(uint8_t pin, uint8_t mode, uint8_t pin_mode) :
     pin(pin),
