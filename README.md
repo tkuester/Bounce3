@@ -77,7 +77,12 @@ exposed, it allows adapting this to other systems, and writing test cases.
 
 ## Installation
 
-To install this library, download it as a zipfile by clicking [here](https://github.com/tkuester/Bounce3/archive/master.zip). Open the Arduino IDE, and click (**Sketch** > **Include Library** > **Add .ZIP Library...**), and select the file you downloaded. From there, you can explore the examples under (**File** > **Examples** > **Bounce3**), and include it in your projects by clicking (**Sketch** > **Include Library** > **Bounce3**).
+To install this library, download it as a zipfile by clicking
+[here](https://github.com/tkuester/Bounce3/archive/master.zip). Open the
+Arduino IDE, and click (**Sketch** > **Include Library** > **Add .ZIP
+Library...**), and select the file you downloaded. From there, you can explore
+the examples under (**File** > **Examples** > **Bounce3**), and include it in
+your projects by clicking (**Sketch** > **Include Library** > **Bounce3**).
 
 ## Hardware Utilization
 
