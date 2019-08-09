@@ -3,17 +3,18 @@
 
 // Flags definition:
 //
-// LSB   MSB
+// MSB   LSB
 // abcd efgh
-// a - 1 == One Shot Mode, 0 == Repeat Mode 
-// b - 1 == Active High, 0 == Active Low
-// c - Reserved
-// d - Last Value
 //
-// e - Pressed Flag
-// f - Released Flag
-// g - Press Type 0
-// h - Press Type 1
+// a - Press Type 1
+// b - Press Type 0
+// c - Released Flag
+// d - Pressed Flag
+//
+// e - Last Value
+// f - Reserved
+// g - 1 == Active High, 0 == Active Low
+// h - 1 == One Shot Mode, 0 == Repeat Mode
 
 #define LAST_PRESSED_FLAG   (1 << 3)
 #define PRESSED_FLAG        (1 << 4)
