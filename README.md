@@ -28,6 +28,10 @@ void loop() {
   }
 }
 ```
+
+You can find the [Bounce3 API
+Documentation](https://tkuester.github.io/Bounce3) here!
+
 ## Feature Comparison
 
 For the following table, sizes were calculated for the Arduino Uno. They will
@@ -117,7 +121,6 @@ of `Bounce3/src/*` into your sketch directory. Then click (**Sketch** >
  - List library in the Arduino repositories
  - Write test cases, esp. focused on rollover
  - Test on more architectures
- - Generate documentation
  - Tag proper releases
  - Performance testing? Instructions / poll?
  - Compare flash sizes? :3
